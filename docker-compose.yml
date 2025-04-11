@@ -3,7 +3,7 @@ version: '3'
 services:
   withcpitch-bot:
     build: .
-    container_name: withcpitch-bot
+    container_name: witchpitch-bot
     restart: always
     volumes:
       - ./audio_cache:/app/audio_cache
