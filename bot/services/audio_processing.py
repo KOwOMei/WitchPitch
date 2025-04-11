@@ -4,9 +4,9 @@ import numpy as np
 import soundfile as sf
 import os
 
-def change_pitch(audio_path: str, pitch_shift: int) -> np.ndarray:
+def change_pitch(audio_path: str, pitch_shift: int) -> Tuple[np.ndarray, int]:
     y, sr = librosa.load(audio_path, sr=None)
-    y_shifted = librosa.effects.pitch_shift(y, sr, n_steps=pitch_shift)
+    y_shifted = librosa.effects.pitch_shift(y, sr=sr, n_steps=pitch_shift)
     return y_shifted, sr
 
 def generate_pitch_variants(audio_path: str) -> List[Tuple[np.ndarray, int]]:

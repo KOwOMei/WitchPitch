@@ -22,7 +22,7 @@ async def handle_audio(message: types.Message, state: FSMContext):
 
 async def process_pitch_selection(callback_query: types.CallbackQuery, state: FSMContext):
     selected_pitch = callback_query.data
-    audio_file_path = await process_audio_file("user_audio.ogg", selected_pitch)
+    audio_file_path = await process_audio_file("user_audio.ogg", "temp", selected_pitch)
     
     await callback_query.answer("Обработка завершена! Отправляю аудиофайл...")
     await callback_query.message.answer_audio(audio=open(audio_file_path, 'rb'))
