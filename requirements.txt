@@ -1,0 +1,3 @@
+aiogram
+librosa
+ffmpeg-python
