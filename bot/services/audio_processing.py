@@ -24,7 +24,7 @@ def save_audio_segment(audio_data: np.ndarray, sr: int, output_path: str, durati
     audio_segment = audio_data[:max_samples]
     sf.write(output_path, audio_segment, sr)
 
-def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str = "temp") -> str:
+async def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str = "temp") -> str:
     """Обработка полного аудиофайла с изменением тональности"""
     
     # Создаем директорию для вывода, если её нет

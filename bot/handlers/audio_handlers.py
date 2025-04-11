@@ -33,7 +33,7 @@ async def process_pitch_selection(callback_query: types.CallbackQuery, state: FS
         await callback_query.answer(f"Обрабатываю аудио с тональностью {selected_pitch}...")
         
         # Убираем await, если функция не асинхронная
-        audio_file_path = process_audio_file("user_audio.ogg", selected_pitch, "temp")
+        audio_file_path = await process_audio_file("user_audio.ogg", selected_pitch, "temp")
         
         await callback_query.message.reply("Обработка завершена! Отправляю аудиофайл...")
         with open(audio_file_path, 'rb') as audio:
