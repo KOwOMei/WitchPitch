@@ -10,6 +10,7 @@ async def start_audio_processing(message: types.Message):
 
 async def handle_audio(message: types.Message, state: FSMContext):
     if message.audio:
+        await message.reply("Обработка аудиофайла...")
         audio_file = await message.audio.get_file()
         await audio_file.download(destination_file="user_audio.ogg")
         
