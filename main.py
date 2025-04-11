@@ -3,7 +3,11 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.utils import executor
 import logging
 import os
-from config import TOKEN
+import dotenv
+
+
+dotenv.load_dotenv()
+TOKEN = os.getenv("TOKEN")
 
 logging.basicConfig(level=logging.INFO)
 
