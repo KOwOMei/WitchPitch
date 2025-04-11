@@ -26,18 +26,20 @@ def save_audio_segment(audio_data: np.ndarray, sr: int, output_path: str, durati
 
 async def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str = "temp") -> str:
     """Обработка полного аудиофайла с изменением тональности"""
+    import asyncio
     
     # Создаем директорию для вывода, если её нет
     os.makedirs(output_dir, exist_ok=True)
-    print(f"Output directory: {output_dir}")
-
-    # Изменяем тональность
-    y_shifted, sr = change_pitch(audio_path, pitch_shift)
-    print(f"Pitch shifted by {pitch_shift} semitones")
-    # Определяем путь для сохранения
-    output_path = os.path.join(output_dir, f"processed_audio_{pitch_shift}.mp3")
     
-    # Сохраняем аудиофайл
-    sf.write(output_path, y_shifted, sr)
-    print(f"Processed audio saved at: {output_path}")
-    return output_path
+    # Выполняем тяжелую операцию в отдельном потоке
+    def process():
+        # Изменяем тональность
+        y_shifted, sr = change_pitch(audio_path, pitch_shift)
+        # Определяем путь для сохранения
+        output_path = os.path.join(output_dir, f"processed_audio_{pitch_shift}.mp3")
+        # Сохраняем аудиофайл
+        sf.write(output_path, y_shifted, sr)
+        return output_path
+    
+    # Запускаем в пуле потоков, чтобы не блокировать основной цикл событий
+    return await asyncio.get_event_loop().run_in_executor(None, process)

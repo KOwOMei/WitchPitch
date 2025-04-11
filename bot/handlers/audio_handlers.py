@@ -1,6 +1,5 @@
 from aiogram import types
 from aiogram.dispatcher import Dispatcher
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher import filters
 from bot.services.audio_processing import process_audio_file
