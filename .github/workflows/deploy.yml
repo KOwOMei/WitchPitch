@@ -1,4 +1,4 @@
-name: Deploy PitchWitch Bot
+name: Deploy WitchPitch Bot
 
 on:
   push:
