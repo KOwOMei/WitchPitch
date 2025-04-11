@@ -5,18 +5,31 @@ import soundfile as sf
 import os
 import logging
 
-def change_pitch(audio_path: str, pitch_shift: int) -> Tuple[np.ndarray, int]:
-    y, sr = librosa.load(audio_path, sr=None)
-    y_shifted = librosa.effects.pitch_shift(y, sr=sr, n_steps=pitch_shift)
-    return y_shifted, sr
+def change_pitch(audio_path: str, pitch_shift: int) -> Optional[Tuple[np.ndarray, int]]:
+    try:
+        logging.info(f"Загрузка файла: {audio_path}")
+        y, sr = librosa.load(audio_path, sr=None)
+        logging.info(f"Файл загружен. sr={sr}, shape={y.shape}")
+
+        logging.info(f"Применение pitch shift: n_steps={pitch_shift}")
+        y_shifted = librosa.effects.pitch_shift(y, sr=sr, n_steps=pitch_shift)
+        logging.info(f"Pitch shift применен. Новая shape={y_shifted.shape}")
+
+        return y_shifted, sr
+    except Exception as e:
+        # Логируем ошибку, возникшую при загрузке или обработке
+        logging.exception(f"Ошибка в change_pitch для файла {audio_path}: {e}")
+        return None # Возвращаем None при ошибке
+
 
 def generate_pitch_variants(audio_path: str) -> List[Tuple[np.ndarray, int]]:
-    pitch_shifts = [-4, -2, 0, 2, 4]
+    pitch_shifts = [-4, -3, -2, -1.5, -1, -0.5, 0.5, 1, 1.5, 2, 3, 4]
     variants = []
     
     for shift in pitch_shifts:
-        variant, sr = change_pitch(audio_path, shift)
-        variants.append((variant, sr))
+        result = change_pitch(audio_path, shift)
+        if result: # Проверяем, что change_pitch не вернул None
+            variants.append(result)
     
     return variants
 
@@ -40,10 +53,15 @@ async def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str 
     def process():
         try:
             # Изменяем тональность
-            logging.info(f"Начинаем изменение тональности для {audio_path}...")
-            y_shifted, sr = change_pitch(audio_path, pitch_shift)
-            logging.info(f"Тональность изменена для {audio_path}.")
+            logging.info(f"Вызов change_pitch для {audio_path} с shift={pitch_shift}...")
+            result = change_pitch(audio_path, pitch_shift)
+            logging.info(f"Результат change_pitch для {audio_path}: {'Успех' if result else 'Ошибка'}")
 
+            if result is None: # Проверяем результат change_pitch
+                logging.error(f"Функция change_pitch вернула None для {audio_path}")
+                return None
+
+            y_shifted, sr = result
             # Определяем путь для сохранения
             output_filename = f"processed_{os.path.basename(audio_path).split('.')[0]}_{pitch_shift}.mp3"
             output_path = os.path.join(output_dir, output_filename)
