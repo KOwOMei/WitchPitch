@@ -24,8 +24,20 @@ def save_audio_segment(audio_data: np.ndarray, sr: int, output_path: str, durati
     audio_segment = audio_data[:max_samples]
     sf.write(output_path, audio_segment, sr)
 
-def process_audio_file(audio_path: str, output_dir: str, pitch_shift: int) -> str:
-    audio_data, sr = change_pitch(audio_path, pitch_shift)
-    output_path = os.path.join(output_dir, 'output_pitch_shifted.mp3')
-    sf.write(output_path, audio_data, sr)
+def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str = "temp") -> str:
+    """Обработка полного аудиофайла с изменением тональности"""
+    import os
+    
+    # Создаем директорию для вывода, если её нет
+    os.makedirs(output_dir, exist_ok=True)
+    
+    # Изменяем тональность
+    y_shifted, sr = change_pitch(audio_path, pitch_shift)
+    
+    # Определяем путь для сохранения
+    output_path = os.path.join(output_dir, f"processed_audio_{pitch_shift}.mp3")
+    
+    # Сохраняем аудиофайл
+    sf.write(output_path, y_shifted, sr)
+    
     return output_path

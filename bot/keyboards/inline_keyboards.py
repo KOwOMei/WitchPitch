@@ -1,13 +1,13 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-def create_pitch_selection_keyboard():
-    keyboard = InlineKeyboardMarkup(row_width=2)
-    pitch_options = [-4, -2, 0, 2, 4]
-    
-    for option in pitch_options:
-        button = InlineKeyboardButton(text=f"Pitch {option}", callback_data=f"pitch_{option}")
-        keyboard.add(button)
-    
+def get_pitch_keyboard():
+    keyboard = InlineKeyboardMarkup(row_width=3)
+    buttons = [
+        InlineKeyboardButton(text=f"Тон {shift}", callback_data=str(shift))
+        for shift in [-4, -2, 0, 2, 4]
+    ]
+    keyboard.add(*buttons)
+    keyboard.add(InlineKeyboardButton(text="Пользовательский тон", callback_data="custom_pitch"))  
     return keyboard
 
 def create_custom_pitch_keyboard():
