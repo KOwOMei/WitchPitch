@@ -7,9 +7,6 @@ from bot.services.audio_processing import process_audio_file
 from bot.keyboards.inline_keyboards import get_pitch_keyboard
 import logging
 
-async def start_audio_processing(message: types.Message):
-    await message.reply("Пожалуйста, отправьте аудиофайл для обработки.")
-
 async def handle_audio(message: types.Message, state: FSMContext):
     try:
         if message.audio:
@@ -29,7 +26,7 @@ async def handle_audio(message: types.Message, state: FSMContext):
     except Exception as e:
         logging.error(f"Ошибка при обработке аудио: {e}")
         await message.reply(f"Произошла ошибка при обработке аудио: {e}")
-        
+
 async def process_pitch_selection(callback_query: types.CallbackQuery, state: FSMContext):
     try:
         selected_pitch = int(callback_query.data)  # Преобразуем строку в число
@@ -48,6 +45,5 @@ async def process_pitch_selection(callback_query: types.CallbackQuery, state: FS
         await callback_query.message.reply(f"Произошла ошибка: {e}")
         
 def register_audio_handlers(dp: Dispatcher):
-    dp.register_message_handler(start_audio_processing, commands=['start'], state="*")
     dp.register_message_handler(handle_audio, content_types=types.ContentType.AUDIO, state="*")
     dp.register_callback_query_handler(process_pitch_selection, state="waiting_for_pitch_selection")

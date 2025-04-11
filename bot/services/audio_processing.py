@@ -39,5 +39,5 @@ def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str = "tem
     
     # Сохраняем аудиофайл
     sf.write(output_path, y_shifted, sr)
-    
+    print(f"Processed audio saved at: {output_path}")
     return output_path
