@@ -26,14 +26,14 @@ def save_audio_segment(audio_data: np.ndarray, sr: int, output_path: str, durati
 
 def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str = "temp") -> str:
     """Обработка полного аудиофайла с изменением тональности"""
-    import os
     
     # Создаем директорию для вывода, если её нет
     os.makedirs(output_dir, exist_ok=True)
-    
+    print(f"Output directory: {output_dir}")
+
     # Изменяем тональность
     y_shifted, sr = change_pitch(audio_path, pitch_shift)
-    
+    print(f"Pitch shifted by {pitch_shift} semitones")
     # Определяем путь для сохранения
     output_path = os.path.join(output_dir, f"processed_audio_{pitch_shift}.mp3")
     
