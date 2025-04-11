@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 import librosa
 import numpy as np
 import soundfile as sf
@@ -25,7 +25,7 @@ def save_audio_segment(audio_data: np.ndarray, sr: int, output_path: str, durati
     audio_segment = audio_data[:max_samples]
     sf.write(output_path, audio_segment, sr)
 
-async def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str = "temp") -> str | None:
+async def process_audio_file(audio_path: str, pitch_shift: int, output_dir: str = "temp") -> Optional[str]:
     """Обработка полного аудиофайла с изменением тональности"""
     import asyncio
 
