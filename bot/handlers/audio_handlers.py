@@ -3,7 +3,7 @@ from aiogram.dispatcher import Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher import filters
-from .services.audio_processing import process_audio, generate_pitch_variants
+from bot.services.audio_processing import process_audio_file, generate_pitch_variants
 
 async def start_audio_processing(message: types.Message):
     await message.reply("Пожалуйста, отправьте аудиофайл для обработки.")
@@ -22,7 +22,7 @@ async def handle_audio(message: types.Message, state: FSMContext):
 
 async def process_pitch_selection(callback_query: types.CallbackQuery, state: FSMContext):
     selected_pitch = callback_query.data
-    audio_file_path = await process_audio("user_audio.ogg", selected_pitch)
+    audio_file_path = await process_audio_file("user_audio.ogg", selected_pitch)
     
     await callback_query.answer("Обработка завершена! Отправляю аудиофайл...")
     await callback_query.message.answer_audio(audio=open(audio_file_path, 'rb'))
