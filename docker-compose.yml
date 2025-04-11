@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  pitchwitch-bot:
+  withcpitch-bot:
     build: .
-    container_name: pitchwitch-bot
+    container_name: withcpitch-bot
     restart: always
     volumes:
       - ./audio_cache:/app/audio_cache
@@ -11,4 +11,4 @@ services:
       - ./media:/app/media
     environment:
       - TOKEN=${TOKEN}
-      - FFMPEG_PATH=ffmpeg
+      - FFMPEG_PATH=/usr/bin/ffmpeg
