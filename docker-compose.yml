@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  pitchwitch-bot:
+    build: .
+    container_name: pitchwitch-bot
+    restart: always
+    volumes:
+      - ./audio_cache:/app/audio_cache
+      - ./temp:/app/temp
+      - ./media:/app/media
+    environment:
+      - TOKEN=${TOKEN}
+      - FFMPEG_PATH=ffmpeg
