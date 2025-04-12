@@ -1,4 +1,5 @@
 import asyncio
+from typing import Optional
 import os
 import logging
 from aiogram import types
@@ -16,7 +17,7 @@ def is_float_or_int(callback_data: str) -> bool:
         return False
 
 # Функция для безопасного удаления файла
-def safe_remove_file(file_path: str | None):
+def safe_remove_file(file_path: Optional[str]):
     if file_path and os.path.exists(file_path):
         try:
             os.remove(file_path)
