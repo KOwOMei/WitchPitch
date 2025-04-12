@@ -24,7 +24,7 @@ async def handle_audio(message: types.Message, state: FSMContext):
             user_id = message.from_user.id
             user_folder = f"user_{user_id}"
             os.makedirs(user_folder, exist_ok=True)
-            audio_path = os.path.join(user_folder, "audio.ogg")
+            audio_path = os.path.join(user_folder, f"{message.audio.file_name}.ogg")
             await message.audio.download(destination_file=audio_path)
 
             await state.update_data(audio_path=audio_path)
